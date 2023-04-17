@@ -1,0 +1,159 @@
+basePath: /
+definitions:
+  models.BaseStatus:
+    enum:
+    - todo
+    - doing
+    - done
+    type: string
+    x-enum-varnames:
+    - Todo
+    - Doing
+    - Done
+  models.ToDo:
+    properties:
+      created_at:
+        type: string
+      detail:
+        type: string
+      id:
+        type: string
+      status:
+        $ref: '#/definitions/models.BaseStatus'
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  schemas.DeleteSuccessResponse:
+    enum:
+    - success
+    type: string
+    x-enum-varnames:
+    - DeleteStatus
+  schemas.PatchToDo:
+    properties:
+      detail:
+        type: string
+      status:
+        $ref: '#/definitions/models.BaseStatus'
+      title:
+        type: string
+    type: object
+  schemas.PostToDo:
+    properties:
+      detail:
+        type: string
+      status:
+        $ref: '#/definitions/models.BaseStatus'
+      title:
+        type: string
+    type: object
+  schemas.ToDo:
+    properties:
+      todo:
+        $ref: '#/definitions/models.ToDo'
+    type: object
+  schemas.ToDos:
+    properties:
+      todos:
+        items:
+          $ref: '#/definitions/models.ToDo'
+        type: array
+    type: object
+info:
+  contact: {}
+  license:
+    name: Simo-C3
+  title: 超感覚C3-2023 API
+  version: "1.0"
+paths:
+  /api/v1/todo:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.ToDos'
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: Todo一覧を配列で返す
+      tags:
+      - ToDo
+    post:
+      parameters:
+      - description: request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.PostToDo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.ToDo'
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: ToDoを作成する
+      tags:
+      - ToDo
+  /api/v1/todo/{id}:
+    delete:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.DeleteSuccessResponse'
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: ToDoを編集する
+      tags:
+      - ToDo
+    patch:
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: request body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/schemas.PatchToDo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schemas.ToDo'
+        "400":
+          description: Bad Request
+          schema: {}
+      summary: ToDoを編集する
+      tags:
+      - ToDo
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
