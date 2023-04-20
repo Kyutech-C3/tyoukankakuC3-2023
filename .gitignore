@@ -13,8 +13,6 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
@@ -24,5 +22,6 @@ dist-ssr
 *.sw?
 
 .env*
+!*.dev
 api/tmp
 .pnpm-store
