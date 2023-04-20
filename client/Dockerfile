@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:19-alpine
 
 RUN mkdir /client
 
@@ -10,7 +10,6 @@ RUN apk update && \
   apk add --no-cache python3 make g++ && \
   apk add git && \
   npm update -g npm &\
-  # npm install -g pnpm &\
   npm update -g pnpm
 
 COPY package.json .
