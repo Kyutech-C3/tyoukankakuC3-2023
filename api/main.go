@@ -4,12 +4,15 @@ package main
 // パッケージのインポート
 import (
 	"log"
+	"time"
+
 	// "test/routers"
 
 	"github.com/Simo-C3/tyoukankakuC3-2023/api/config"
 	"github.com/Simo-C3/tyoukankakuC3-2023/api/db"
 	"github.com/Simo-C3/tyoukankakuC3-2023/api/routers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	// OpenAPI
@@ -29,6 +32,33 @@ func main() {
 	config.LoadConfig()
 
 	e := gin.Default()
+
+	// cors設定
+	e.Use(cors.New(cors.Config{
+		// アクセス許可するオリジン
+		AllowOrigins: []string{
+				"http://localhost:3000",
+		},
+		// アクセス許可するHTTPメソッド
+		AllowMethods: []string{
+				"POST",
+				"GET",
+				"PUT",
+				"DELETE",
+				"PATCH",
+				"OPTIONS",
+		},
+		// 許可するHTTPリクエストヘッダ
+		AllowHeaders: []string{
+				"Content-Type",
+		},
+		// cookieなどの情報を必要とするかどうか
+		AllowCredentials: false,
+		// preflightリクエストの結果をキャッシュする時間
+		MaxAge: 24 * time.Hour,
+}))
+
+
 	routers.Router(e)
 
 	e.GET("/", func(c *gin.Context) {
